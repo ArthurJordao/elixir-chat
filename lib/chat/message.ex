@@ -18,8 +18,12 @@ defmodule Chat.Message do
   end
 
   def get_messages(limit \\ 20) do
-    Chat.Message
-    |> limit(^limit)
-    |> Chat.Repo.all()
+    query =
+      from(m in Chat.Message,
+        order_by: [desc: :id],
+        limit: ^limit
+      )
+
+    Enum.reverse(Chat.Repo.all(query))
   end
 end
